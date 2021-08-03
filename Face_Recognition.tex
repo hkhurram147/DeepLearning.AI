@@ -1,0 +1,1357 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Face\_Recognition}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{face-recognition}{%
+\section{Face Recognition}\label{face-recognition}}
+
+Welcome! In this assignment, you're going to build a face recognition
+system. Many of the ideas presented here are from
+\href{https://arxiv.org/pdf/1503.03832.pdf}{FaceNet}. In the lecture,
+you also encountered
+\href{https://research.fb.com/wp-content/uploads/2016/11/deepface-closing-the-gap-to-human-level-performance-in-face-verification.pdf}{DeepFace}.
+
+Face recognition problems commonly fall into one of two categories:
+
+\textbf{Face Verification} ``Is this the claimed person?'' For example,
+at some airports, you can pass through customs by letting a system scan
+your passport and then verifying that you (the person carrying the
+passport) are the correct person. A mobile phone that unlocks using your
+face is also using face verification. This is a 1:1 matching problem.
+
+\textbf{Face Recognition} ``Who is this person?'' For example, the video
+lecture showed a \href{https://www.youtube.com/watch?v=wr4rx0Spihs}{face
+recognition video} of Baidu employees entering the office without
+needing to otherwise identify themselves. This is a 1:K matching
+problem.
+
+FaceNet learns a neural network that encodes a face image into a vector
+of 128 numbers. By comparing two such vectors, you can then determine if
+two pictures are of the same person.
+
+By the end of this assignment, you'll be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Differentiate between face recognition and face verification
+\item
+  Implement one-shot learning to solve a face recognition problem
+\item
+  Apply the triplet loss function to learn a network's parameters in the
+  context of face recognition
+\item
+  Explain how to pose face recognition as a binary classification
+  problem
+\item
+  Map face images into 128-dimensional encodings using a pretrained
+  model
+\item
+  Perform face verification and face recognition with these encodings
+\end{itemize}
+
+\textbf{Channels-last notation}
+
+For this assignment, you'll be using a pre-trained model which
+represents ConvNet activations using a ``channels last'' convention, as
+used during the lecture and in previous programming assignments.
+
+In other words, a batch of images will be of shape
+\((m, n_H, n_W, n_C)\).
+
+    \hypertarget{table-of-contents}{%
+\subsection{Table of Contents}\label{table-of-contents}}
+
+\begin{itemize}
+\tightlist
+\item
+  Section \ref{1}
+\item
+  Section \ref{2}
+\item
+  Section \ref{3}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{3-1}
+  \item
+    Section \ref{3-2}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{ex-1}
+    \end{itemize}
+  \end{itemize}
+\item
+  Section \ref{4}
+\item
+  Section \ref{5}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{5-1}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{ex-2}
+    \end{itemize}
+  \item
+    Section \ref{5-2}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{ex-3}
+    \end{itemize}
+  \end{itemize}
+\item
+  Section \ref{6}
+\end{itemize}
+
+    \#\# 1 - Packages
+
+Go ahead and run the cell below to import the packages you'll need.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k+kn}{import} \PY{n}{Sequential}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{Conv2D}\PY{p}{,} \PY{n}{ZeroPadding2D}\PY{p}{,} \PY{n}{Activation}\PY{p}{,} \PY{n}{Input}\PY{p}{,} \PY{n}{concatenate}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k+kn}{import} \PY{n}{Model}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{BatchNormalization}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{MaxPooling2D}\PY{p}{,} \PY{n}{AveragePooling2D}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{Concatenate}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{Lambda}\PY{p}{,} \PY{n}{Flatten}\PY{p}{,} \PY{n}{Dense}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{initializers} \PY{k+kn}{import} \PY{n}{glorot\PYZus{}uniform}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{Layer}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras} \PY{k+kn}{import} \PY{n}{backend} \PY{k}{as} \PY{n}{K}
+\PY{n}{K}\PY{o}{.}\PY{n}{set\PYZus{}image\PYZus{}data\PYZus{}format}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{channels\PYZus{}last}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{numpy} \PY{k+kn}{import} \PY{n}{genfromtxt}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf}
+\PY{k+kn}{import} \PY{n+nn}{PIL}
+
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} autoreload
+\PY{o}{\PYZpc{}}\PY{k}{autoreload} 2
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The autoreload extension is already loaded. To reload it, use:
+  \%reload\_ext autoreload
+    \end{Verbatim}
+
+    \#\# 2 - Naive Face Verification
+
+In Face Verification, you're given two images and you have to determine
+if they are of the same person. The simplest way to do this is to
+compare the two images pixel-by-pixel. If the distance between the raw
+images is below a chosen threshold, it may be the same person!
+
+Figure 1
+
+Of course, this algorithm performs poorly, since the pixel values change
+dramatically due to variations in lighting, orientation of the person's
+face, minor changes in head position, and so on.
+
+You'll see that rather than using the raw image, you can learn an
+encoding, \(f(img)\).
+
+By using an encoding for each image, an element-wise comparison produces
+a more accurate judgement as to whether two pictures are of the same
+person.
+
+    \#\# 3 - Encoding Face Images into a 128-Dimensional Vector
+
+\#\#\# 3.1 - Using a ConvNet to Compute Encodings
+
+The FaceNet model takes a lot of data and a long time to train. So
+following the common practice in applied deep learning, you'll load
+weights that someone else has already trained. The network architecture
+follows the Inception model from
+\href{https://arxiv.org/abs/1409.4842}{Szegedy \emph{et al}..} An
+Inception network implementation has been provided for you, and you can
+find it in the file \texttt{inception\_blocks\_v2.py} to get a closer
+look at how it is implemented.
+
+\emph{Hot tip:} Go to ``File-\textgreater Open\ldots{}'' at the top of
+this notebook. This opens the file directory that contains the
+\texttt{.py} file).
+
+The key things to be aware of are:
+
+\begin{itemize}
+\tightlist
+\item
+  This network uses 160x160 dimensional RGB images as its input.
+  Specifically, a face image (or batch of \(m\) face images) as a tensor
+  of shape \((m, n_H, n_W, n_C) = (m, 160, 160, 3)\)
+\item
+  The input images are originally of shape 96x96, thus, you need to
+  scale them to 160x160. This is done in the
+  \texttt{img\_to\_encoding()} function.
+\item
+  The output is a matrix of shape \((m, 128)\) that encodes each input
+  face image into a 128-dimensional vector
+\end{itemize}
+
+Run the cell below to create the model for face images!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k+kn}{import} \PY{n}{model\PYZus{}from\PYZus{}json}
+
+\PY{n}{json\PYZus{}file} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{keras\PYZhy{}facenet\PYZhy{}h5/model.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{loaded\PYZus{}model\PYZus{}json} \PY{o}{=} \PY{n}{json\PYZus{}file}\PY{o}{.}\PY{n}{read}\PY{p}{(}\PY{p}{)}
+\PY{n}{json\PYZus{}file}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\PY{n}{model} \PY{o}{=} \PY{n}{model\PYZus{}from\PYZus{}json}\PY{p}{(}\PY{n}{loaded\PYZus{}model\PYZus{}json}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{load\PYZus{}weights}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{keras\PYZhy{}facenet\PYZhy{}h5/model.h5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now summarize the input and output shapes:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{inputs}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{outputs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[<tf.Tensor 'input\_1\_2:0' shape=(None, 160, 160, 3) dtype=float32>]
+[<tf.Tensor 'Bottleneck\_BatchNorm/batchnorm\_2/add\_1:0' shape=(None, 128)
+dtype=float32>]
+    \end{Verbatim}
+
+    By using a 128-neuron fully connected layer as its last layer, the model
+ensures that the output is an encoding vector of size 128. You then use
+the encodings to compare two face images as follows:
+
+Figure 2: By computing the distance between two encodings and
+thresholding, you can determine if the two pictures represent the same
+person
+
+So, an encoding is a good one if:
+
+\begin{itemize}
+\tightlist
+\item
+  The encodings of two images of the same person are quite similar to
+  each other.
+\item
+  The encodings of two images of different persons are very different.
+\end{itemize}
+
+The triplet loss function formalizes this, and tries to ``push'' the
+encodings of two images of the same person (Anchor and Positive) closer
+together, while ``pulling'' the encodings of two images of different
+persons (Anchor, Negative) further apart.
+
+Figure 3: In the next section, you'll call the pictures from left to
+right: Anchor (A), Positive (P), Negative (N)
+
+    \#\#\# 3.2 - The Triplet Loss
+
+\textbf{Important Note}: Since you're using a pretrained model, you
+won't actually need to implement the triplet loss function in this
+assignment. \emph{However}, the triplet loss is the main ingredient of
+the face recognition algorithm, and you'll need to know how to use it
+for training your own FaceNet model, as well as other types of image
+similarity problems. Therefore, you'll implement it below, for fun and
+edification. :)
+
+For an image \(x\), its encoding is denoted as \(f(x)\), where \(f\) is
+the function computed by the neural network.
+
+Training will use triplets of images \((A, P, N)\):
+
+\begin{itemize}
+\tightlist
+\item
+  A is an ``Anchor'' image--a picture of a person.
+\item
+  P is a ``Positive'' image--a picture of the same person as the Anchor
+  image.
+\item
+  N is a ``Negative'' image--a picture of a different person than the
+  Anchor image.
+\end{itemize}
+
+These triplets are picked from the training dataset.
+\((A^{(i)}, P^{(i)}, N^{(i)})\) is used here to denote the \(i\)-th
+training example.
+
+You'd like to make sure that an image \(A^{(i)}\) of an individual is
+closer to the Positive \(P^{(i)}\) than to the Negative image
+\(N^{(i)}\)) by at least a margin \(\alpha\):
+
+\[
+|| f\left(A^{(i)}\right)-f\left(P^{(i)}\right)||_{2}^{2}+\alpha<|| f\left(A^{(i)}\right)-f\left(N^{(i)}\right)||_{2}^{2}
+\]
+
+You would thus like to minimize the following ``triplet cost'':
+
+\[\mathcal{J} = \sum^{m}_{i=1} \large[ \small \underbrace{\mid \mid f(A^{(i)}) - f(P^{(i)}) \mid \mid_2^2}_\text{(1)} - \underbrace{\mid \mid f(A^{(i)}) - f(N^{(i)}) \mid \mid_2^2}_\text{(2)} + \alpha \large ] \small_+ \tag{3}\]
+Here, the notation ``\([z]_+\)'' is used to denote \(max(z,0)\).
+
+\textbf{Notes}:
+
+\begin{itemize}
+\tightlist
+\item
+  The term (1) is the squared distance between the anchor ``A'' and the
+  positive ``P'' for a given triplet; you want this to be small.
+\item
+  The term (2) is the squared distance between the anchor ``A'' and the
+  negative ``N'' for a given triplet, you want this to be relatively
+  large. It has a minus sign preceding it because minimizing the
+  negative of the term is the same as maximizing that term.
+\item
+  \(\alpha\) is called the margin. It's a hyperparameter that you pick
+  manually. You'll use \(\alpha = 0.2\).
+\end{itemize}
+
+Most implementations also rescale the encoding vectors to haven L2 norm
+equal to one (i.e., \(\mid \mid f(img)\mid \mid_2\)=1); you won't have
+to worry about that in this assignment.
+
+\#\#\# Exercise 1 - triplet\_loss
+
+Implement the triplet loss as defined by formula (3). These are the 4
+steps:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Compute the distance between the encodings of ``anchor'' and
+  ``positive'': \(\mid \mid f(A^{(i)}) - f(P^{(i)}) \mid \mid_2^2\)
+\item
+  Compute the distance between the encodings of ``anchor'' and
+  ``negative'': \(\mid \mid f(A^{(i)}) - f(N^{(i)}) \mid \mid_2^2\)
+\item
+  Compute the formula per training example: \$ \mid \mid f(A\^{}\{(i)\})
+  - f(P\^{}\{(i)\}) \mid \mid\_2\^{}2 - \mid \mid f(A\^{}\{(i)\}) -
+  f(N\^{}\{(i)\}) \mid \mid\_2\^{}2 + \alpha\$
+\item
+  Compute the full formula by taking the max with zero and summing over
+  the training
+  examples:\[\mathcal{J} = \sum^{m}_{i=1} \large[ \small \mid \mid f(A^{(i)}) - f(P^{(i)}) \mid \mid_2^2 - \mid \mid f(A^{(i)}) - f(N^{(i)}) \mid \mid_2^2+ \alpha \large ] \small_+ \tag{3}\]
+\end{enumerate}
+
+\emph{Hints}:
+
+\begin{itemize}
+\item
+  Useful functions: \texttt{tf.reduce\_sum()}, \texttt{tf.square()},
+  \texttt{tf.subtract()}, \texttt{tf.add()}, \texttt{tf.maximum()}.
+\item
+  For steps 1 and 2, sum over the entries of
+  \(\mid \mid f(A^{(i)}) - f(P^{(i)}) \mid \mid_2^2\) and
+  \(\mid \mid f(A^{(i)}) - f(N^{(i)}) \mid \mid_2^2\).
+\item
+  For step 4, you will sum over the training examples.
+\end{itemize}
+
+\emph{Additional Hints}:
+
+\begin{itemize}
+\item
+  Recall that the square of the L2 norm is the sum of the squared
+  differences: \(||x - y||_{2}^{2} = \sum_{i=1}^{N}(x_{i} - y_{i})^{2}\)
+\item
+  Note that the anchor, positive and negative encodings are of shape
+  (\emph{m},128), where \emph{m} is the number of training examples and
+  128 is the number of elements used to encode a single example.
+\item
+  For steps 1 and 2, maintain the number of \emph{m} training examples
+  and sum along the 128 values of each encoding. \texttt{tf.reduce\_sum}
+  has an axis parameter. This chooses along which axis the sums are
+  applied.
+\item
+  Note that one way to choose the last axis in a tensor is to use
+  negative indexing (axis=-1).
+\item
+  In step 4, when summing over training examples, the result will be a
+  single scalar value.
+\item
+  For \texttt{tf.reduce\_sum} to sum across all axes, keep the default
+  value axis=None.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{62}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C1(UNIQUE CELL IDENTIFIER, DO NOT EDIT)}
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: triplet\PYZus{}loss}
+
+\PY{k}{def} \PY{n+nf}{triplet\PYZus{}loss}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{alpha} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Implementation of the triplet loss as defined by formula (3)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    y\PYZus{}true \PYZhy{}\PYZhy{} true labels, required when you define a loss in Keras, you don\PYZsq{}t need it in this function.}
+\PY{l+s+sd}{    y\PYZus{}pred \PYZhy{}\PYZhy{} python list containing three objects:}
+\PY{l+s+sd}{            anchor \PYZhy{}\PYZhy{} the encodings for the anchor images, of shape (None, 128)}
+\PY{l+s+sd}{            positive \PYZhy{}\PYZhy{} the encodings for the positive images, of shape (None, 128)}
+\PY{l+s+sd}{            negative \PYZhy{}\PYZhy{} the encodings for the negative images, of shape (None, 128)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    loss \PYZhy{}\PYZhy{} real number, value of the loss}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{n}{anchor}\PY{p}{,} \PY{n}{positive}\PY{p}{,} \PY{n}{negative} \PY{o}{=} \PY{n}{y\PYZus{}pred}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE}
+    \PY{c+c1}{\PYZsh{}(≈ 4 lines)}
+
+    \PY{c+c1}{\PYZsh{} Step 1: Compute the (encoding) distance between the anchor and the positive}
+    \PY{n}{pos\PYZus{}dist} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{reduce\PYZus{}sum}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{subtract}\PY{p}{(}\PY{n}{anchor}\PY{p}{,} \PY{n}{positive}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} Step 2: Compute the (encoding) distance between the anchor and the negative}
+    \PY{n}{neg\PYZus{}dist} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{reduce\PYZus{}sum}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{subtract}\PY{p}{(}\PY{n}{anchor}\PY{p}{,}\PY{n}{negative}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} Step 3: subtract the two previous distances and add alpha.}
+    \PY{n}{basic\PYZus{}loss} \PY{o}{=} \PY{n}{pos\PYZus{}dist} \PY{o}{\PYZhy{}} \PY{n}{neg\PYZus{}dist} \PY{o}{+} \PY{n}{alpha}
+    \PY{c+c1}{\PYZsh{} Step 4: Take the maximum of basic\PYZus{}loss and 0.0. Sum over the training examples.}
+    \PY{n}{loss} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{reduce\PYZus{}sum}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{maximum}\PY{p}{(}\PY{n}{basic\PYZus{}loss}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE}
+    
+    \PY{k}{return} \PY{n}{loss}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{63}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} BEGIN UNIT TEST}
+\PY{n}{tf}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{set\PYZus{}seed}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{y\PYZus{}true} \PY{o}{=} \PY{p}{(}\PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{)} \PY{c+c1}{\PYZsh{} It is not used}
+\PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{keras}\PY{o}{.}\PY{n}{backend}\PY{o}{.}\PY{n}{random\PYZus{}normal}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{128}\PY{p}{]}\PY{p}{,} \PY{n}{mean}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{,} \PY{n}{stddev}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{seed} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+          \PY{n}{tf}\PY{o}{.}\PY{n}{keras}\PY{o}{.}\PY{n}{backend}\PY{o}{.}\PY{n}{random\PYZus{}normal}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{128}\PY{p}{]}\PY{p}{,} \PY{n}{mean}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{stddev}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{seed} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+          \PY{n}{tf}\PY{o}{.}\PY{n}{keras}\PY{o}{.}\PY{n}{backend}\PY{o}{.}\PY{n}{random\PYZus{}normal}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{128}\PY{p}{]}\PY{p}{,} \PY{n}{mean}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{stddev}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{seed} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{loss} \PY{o}{=} \PY{n}{triplet\PYZus{}loss}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}
+
+\PY{k}{assert} \PY{n+nb}{type}\PY{p}{(}\PY{n}{loss}\PY{p}{)} \PY{o}{==} \PY{n}{tf}\PY{o}{.}\PY{n}{python}\PY{o}{.}\PY{n}{framework}\PY{o}{.}\PY{n}{ops}\PY{o}{.}\PY{n}{EagerTensor}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Use tensorflow functions}\PY{l+s+s2}{\PYZdq{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loss = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{loss}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{y\PYZus{}pred\PYZus{}perfect} \PY{o}{=} \PY{p}{(}\PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{,}\PY{p}{]}\PY{p}{)}
+\PY{n}{loss} \PY{o}{=} \PY{n}{triplet\PYZus{}loss}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}perfect}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}
+\PY{k}{assert} \PY{n}{loss} \PY{o}{==} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong value. Did you add the alpha to basic\PYZus{}loss?}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{y\PYZus{}pred\PYZus{}perfect} \PY{o}{=} \PY{p}{(}\PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{,}\PY{p}{]}\PY{p}{)}
+\PY{n}{loss} \PY{o}{=} \PY{n}{triplet\PYZus{}loss}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}perfect}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+\PY{k}{assert} \PY{n}{loss} \PY{o}{==} \PY{l+m+mf}{1.}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong value. Check that pos\PYZus{}dist = 0 and neg\PYZus{}dist = 2 in this example}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{y\PYZus{}pred\PYZus{}perfect} \PY{o}{=} \PY{p}{(}\PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{,}\PY{p}{]}\PY{p}{)}
+\PY{n}{loss} \PY{o}{=} \PY{n}{triplet\PYZus{}loss}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}perfect}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+\PY{k}{assert} \PY{n}{loss} \PY{o}{==} \PY{l+m+mf}{2.}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong value. Check that pos\PYZus{}dist = 2 and neg\PYZus{}dist = 0 in this example}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{y\PYZus{}pred\PYZus{}perfect} \PY{o}{=} \PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{,}\PY{p}{]}\PY{p}{)}
+\PY{n}{loss} \PY{o}{=} \PY{n}{triplet\PYZus{}loss}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}perfect}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{k}{assert} \PY{n}{loss} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong value. Are you taking the maximum between basic\PYZus{}loss and 0?}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{y\PYZus{}pred\PYZus{}perfect} \PY{o}{=} \PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{]}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{loss} \PY{o}{=} \PY{n}{triplet\PYZus{}loss}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}perfect}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+\PY{k}{assert} \PY{n}{loss} \PY{o}{==} \PY{l+m+mf}{2.}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong value. Are you applying tf.reduce\PYZus{}sum to get the loss?}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{y\PYZus{}pred\PYZus{}perfect} \PY{o}{=} \PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{2.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,} \PY{l+m+mf}{3.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{0.}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{,}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{loss} \PY{o}{=} \PY{n}{triplet\PYZus{}loss}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}perfect}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{k}{if} \PY{p}{(}\PY{n}{loss} \PY{o}{==} \PY{l+m+mf}{4.}\PY{p}{)}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{Exception}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Perhaps you are not using axis=\PYZhy{}1 in reduce\PYZus{}sum?}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{assert} \PY{n}{loss} \PY{o}{==} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong value. Check your implementation}\PY{l+s+s2}{\PYZdq{}}
+\PY{c+c1}{\PYZsh{} END UNIT TEST}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+loss = tf.Tensor(527.2598, shape=(), dtype=float32)
+    \end{Verbatim}
+
+    \textbf{Expected Output}:
+
+loss
+
+527.2598
+
+    \#\# 4 - Loading the Pre-trained Model
+
+FaceNet is trained by minimizing the triplet loss. But since training
+requires a lot of data and a lot of computation, you won't train it from
+scratch here. Instead, you'll load a previously trained model in the
+following cell; which might take a couple of minutes to run.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{FRmodel} \PY{o}{=} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Here are some examples of distances between the encodings between three
+individuals:
+
+Figure 4: Example of distance outputs between three individuals'
+encodings
+
+Now use this model to perform face verification and face recognition!
+
+    \#\# 5 - Applying the Model
+
+You're building a system for an office building where the building
+manager would like to offer facial recognition to allow the employees to
+enter the building.
+
+You'd like to build a face verification system that gives access to a
+list of people. To be admitted, each person has to swipe an
+identification card at the entrance. The face recognition system then
+verifies that they are who they claim to be.
+
+\#\#\# 5.1 - Face Verification
+
+Now you'll build a database containing one encoding vector for each
+person who is allowed to enter the office. To generate the encoding,
+you'll use \texttt{img\_to\_encoding(image\_path,\ model)}, which runs
+the forward propagation of the model on the specified image.
+
+Run the following code to build the database (represented as a Python
+dictionary). This database maps each person's name to a 128-dimensional
+encoding of their face.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{64}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}tf.keras.backend.set\PYZus{}image\PYZus{}data\PYZus{}format(\PYZsq{}channels\PYZus{}last\PYZsq{})}
+\PY{k}{def} \PY{n+nf}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{n}{image\PYZus{}path}\PY{p}{,} \PY{n}{model}\PY{p}{)}\PY{p}{:}
+    \PY{n}{img} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{keras}\PY{o}{.}\PY{n}{preprocessing}\PY{o}{.}\PY{n}{image}\PY{o}{.}\PY{n}{load\PYZus{}img}\PY{p}{(}\PY{n}{image\PYZus{}path}\PY{p}{,} \PY{n}{target\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{160}\PY{p}{,} \PY{l+m+mi}{160}\PY{p}{)}\PY{p}{)}
+    \PY{n}{img} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{around}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{img}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{255.0}\PY{p}{,} \PY{n}{decimals}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+    \PY{n}{x\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{expand\PYZus{}dims}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+    \PY{n}{embedding} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict\PYZus{}on\PYZus{}batch}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{)}
+    \PY{k}{return} \PY{n}{embedding} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{embedding}\PY{p}{,} \PY{n+nb}{ord}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)} \PY{c+c1}{\PYZsh{} normalized embedding is returned}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{database} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{danielle}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/danielle.png}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{younes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/younes.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tian}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/tian.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{andrew}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/andrew.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{kian}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/kian.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dan}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/dan.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sebastiano}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/sebastiano.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bertrand}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/bertrand.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{kevin}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/kevin.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{felix}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/felix.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{benoit}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/benoit.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{n}{database}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{arnaud}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/arnaud.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Load the images of Danielle and Kian:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{66}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{danielle} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{keras}\PY{o}{.}\PY{n}{preprocessing}\PY{o}{.}\PY{n}{image}\PY{o}{.}\PY{n}{load\PYZus{}img}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/danielle.png}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{target\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{160}\PY{p}{,} \PY{l+m+mi}{160}\PY{p}{)}\PY{p}{)}
+\PY{n}{kian} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{keras}\PY{o}{.}\PY{n}{preprocessing}\PY{o}{.}\PY{n}{image}\PY{o}{.}\PY{n}{load\PYZus{}img}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/kian.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{target\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{160}\PY{p}{,} \PY{l+m+mi}{160}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{np}\PY{o}{.}\PY{n}{around}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{kian}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{255.0}\PY{p}{,} \PY{n}{decimals}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(160, 160, 3)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{68}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{kian}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{68}{}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{69}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{np}\PY{o}{.}\PY{n}{around}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{danielle}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{255.0}\PY{p}{,} \PY{n}{decimals}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{69}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(160, 160, 3)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{70}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{danielle}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{70}{}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    Now, when someone shows up at your front door and swipes their ID card
+(thus giving you their name), you can look up their encoding in the
+database, and use it to check if the person standing at the front door
+matches the name on the ID.
+
+\#\#\# Exercise 2 - verify
+
+Implement the \texttt{verify()} function, which checks if the front-door
+camera picture (\texttt{image\_path}) is actually the person called
+``identity''. You will have to go through the following steps:
+
+\begin{itemize}
+\tightlist
+\item
+  Compute the encoding of the image from \texttt{image\_path}.
+\item
+  Compute the distance between this encoding and the encoding of the
+  identity image stored in the database.
+\item
+  Open the door if the distance is less than 0.7, else do not open it.
+\end{itemize}
+
+As presented above, you should use the L2 distance
+\texttt{np.linalg.norm}.
+
+\textbf{Note}: In this implementation, compare the L2 distance, not the
+square of the L2 distance, to the threshold 0.7.
+
+\emph{Hints}:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{identity} is a string that is also a key in the database
+  dictionary.
+\item
+  \texttt{img\_to\_encoding} has two parameters: the image\_path and
+  model.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{72}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C2(UNIQUE CELL IDENTIFIER, DO NOT EDIT)}
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: verify}
+
+\PY{k}{def} \PY{n+nf}{verify}\PY{p}{(}\PY{n}{image\PYZus{}path}\PY{p}{,} \PY{n}{identity}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{model}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Function that verifies if the person on the \PYZdq{}image\PYZus{}path\PYZdq{} image is \PYZdq{}identity\PYZdq{}.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{        image\PYZus{}path \PYZhy{}\PYZhy{} path to an image}
+\PY{l+s+sd}{        identity \PYZhy{}\PYZhy{} string, name of the person you\PYZsq{}d like to verify the identity. Has to be an employee who works in the office.}
+\PY{l+s+sd}{        database \PYZhy{}\PYZhy{} python dictionary mapping names of allowed people\PYZsq{}s names (strings) to their encodings (vectors).}
+\PY{l+s+sd}{        model \PYZhy{}\PYZhy{} your Inception model instance in Keras}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{        dist \PYZhy{}\PYZhy{} distance between the image\PYZus{}path and the image of \PYZdq{}identity\PYZdq{} in the database.}
+\PY{l+s+sd}{        door\PYZus{}open \PYZhy{}\PYZhy{} True, if the door should open. False otherwise.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE}
+    \PY{c+c1}{\PYZsh{} Step 1: Compute the encoding for the image. Use img\PYZus{}to\PYZus{}encoding() see example above. (≈ 1 line)}
+    \PY{n}{encoding} \PY{o}{=} \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{n}{image\PYZus{}path}\PY{p}{,} \PY{n}{model}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} Step 2: Compute distance with identity\PYZsq{}s image (≈ 1 line)}
+    \PY{n}{dist} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{database}\PY{p}{[}\PY{n}{identity}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{encoding}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Step 3: Open the door if dist \PYZlt{} 0.7, else don\PYZsq{}t open (≈ 3 lines)}
+    \PY{k}{if} \PY{n}{dist} \PY{o}{\PYZlt{}} \PY{l+m+mf}{0.7}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{It}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{identity}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{, welcome in!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{door\PYZus{}open} \PY{o}{=} \PY{k+kc}{True}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{It}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s not }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{identity}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{, please go away}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{door\PYZus{}open} \PY{o}{=} \PY{k+kc}{False}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE        }
+    \PY{k}{return} \PY{n}{dist}\PY{p}{,} \PY{n}{door\PYZus{}open}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Younes is trying to enter the office and the camera takes a picture of
+him (``images/camera\_0.jpg''). Let's run your verification algorithm on
+this picture:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{73}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} BEGIN UNIT TEST}
+\PY{k}{assert}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{verify}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/camera\PYZus{}1.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bertrand}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mf}{0.54364836}\PY{p}{,} \PY{k+kc}{True}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{k}{assert}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{verify}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/camera\PYZus{}3.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bertrand}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mf}{0.38616243}\PY{p}{,} \PY{k+kc}{True}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{k}{assert}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{verify}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/camera\PYZus{}1.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{younes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mf}{1.3963861}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{k}{assert}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{verify}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/camera\PYZus{}3.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{younes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mf}{1.3872949}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{verify}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/camera\PYZus{}0.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{younes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} END UNIT TEST}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+It's bertrand, welcome in!
+It's bertrand, welcome in!
+It's not younes, please go away
+It's not younes, please go away
+It's younes, welcome in!
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{73}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(0.5992949, True)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Expected Output}:
+
+It's Younes, welcome in!
+
+(0.5992946, True)
+
+    Benoit, who does not work in the office, stole Kian's ID card and tried
+to enter the office. Naughty Benoit! The camera took a picture of Benoit
+("images/camera\_2.jpg).
+
+Run the verification algorithm to check if Benoit can enter.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{74}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{verify}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/camera\PYZus{}2.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{kian}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+It's not kian, please go away
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{74}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(1.0259346, False)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Expected Output}:
+
+It's not Kian, please go away
+
+(1.0259346, False)
+
+    \#\#\# 5.2 - Face Recognition
+
+Your face verification system is mostly working. But since Kian got his
+ID card stolen, when he came back to the office the next day he couldn't
+get in!
+
+To solve this, you'd like to change your face verification system to a
+face recognition system. This way, no one has to carry an ID card
+anymore. An authorized person can just walk up to the building, and the
+door will unlock for them!
+
+You'll implement a face recognition system that takes as input an image,
+and figures out if it is one of the authorized persons (and if so, who).
+Unlike the previous face verification system, you will no longer get a
+person's name as one of the inputs.
+
+\#\#\# Exercise 3 - who\_is\_it
+
+Implement \texttt{who\_is\_it()} with the following steps:
+
+\begin{itemize}
+\tightlist
+\item
+  Compute the target encoding of the image from \texttt{image\_path}
+\item
+  Find the encoding from the database that has smallest distance with
+  the target encoding.
+\item
+  Initialize the \texttt{min\_dist} variable to a large enough number
+  (100). This helps you keep track of the closest encoding to the
+  input's encoding.
+\item
+  Loop over the database dictionary's names and encodings. To loop use
+  for (name, db\_enc) in \texttt{database.items()}.
+\item
+  Compute the L2 distance between the target ``encoding'' and the
+  current ``encoding'' from the database. If this distance is less than
+  the min\_dist, then set min\_dist to dist, and identity to name.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C3(UNIQUE CELL IDENTIFIER, DO NOT EDIT)}
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: who\PYZus{}is\PYZus{}it}
+
+\PY{k}{def} \PY{n+nf}{who\PYZus{}is\PYZus{}it}\PY{p}{(}\PY{n}{image\PYZus{}path}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{model}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Implements face recognition for the office by finding who is the person on the image\PYZus{}path image.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{        image\PYZus{}path \PYZhy{}\PYZhy{} path to an image}
+\PY{l+s+sd}{        database \PYZhy{}\PYZhy{} database containing image encodings along with the name of the person on the image}
+\PY{l+s+sd}{        model \PYZhy{}\PYZhy{} your Inception model instance in Keras}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{        min\PYZus{}dist \PYZhy{}\PYZhy{} the minimum distance between image\PYZus{}path encoding and the encodings from the database}
+\PY{l+s+sd}{        identity \PYZhy{}\PYZhy{} string, the name prediction for the person on image\PYZus{}path}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{} Step 1: Compute the target \PYZdq{}encoding\PYZdq{} for the image. Use img\PYZus{}to\PYZus{}encoding() see example above. \PYZsh{}\PYZsh{} (≈ 1 line)}
+    \PY{n}{encoding} \PY{o}{=}  \PY{n}{img\PYZus{}to\PYZus{}encoding}\PY{p}{(}\PY{n}{image\PYZus{}path}\PY{p}{,} \PY{n}{model}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{}\PYZsh{} Step 2: Find the closest encoding \PYZsh{}\PYZsh{}}
+    
+    \PY{c+c1}{\PYZsh{} Initialize \PYZdq{}min\PYZus{}dist\PYZdq{} to a large value, say 100 (≈1 line)}
+    \PY{n}{min\PYZus{}dist} \PY{o}{=} \PY{l+m+mi}{1000}
+    
+    \PY{c+c1}{\PYZsh{} Loop over the database dictionary\PYZsq{}s names and encodings.}
+    \PY{k}{for} \PY{p}{(}\PY{n}{name}\PY{p}{,} \PY{n}{db\PYZus{}enc}\PY{p}{)} \PY{o+ow}{in} \PY{n}{database}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        
+        \PY{c+c1}{\PYZsh{} Compute L2 distance between the target \PYZdq{}encoding\PYZdq{} and the current db\PYZus{}enc from the database. (≈ 1 line)}
+        \PY{n}{dist} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{encoding} \PY{o}{\PYZhy{}} \PY{n}{db\PYZus{}enc}\PY{p}{)}
+
+        \PY{k}{if} \PY{n}{dist} \PY{o}{\PYZlt{}} \PY{n}{min\PYZus{}dist}\PY{p}{:}
+            \PY{n}{min\PYZus{}dist} \PY{o}{=} \PY{n}{dist}
+            \PY{n}{identity} \PY{o}{=} \PY{n}{name}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE}
+    
+    \PY{k}{if} \PY{n}{min\PYZus{}dist} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.7}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Not in the database.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{it}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{identity}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{, the distance is }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{min\PYZus{}dist}\PY{p}{)}\PY{p}{)}
+        
+    \PY{k}{return} \PY{n}{min\PYZus{}dist}\PY{p}{,} \PY{n}{identity}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Younes is at the front door and the camera takes a picture of him
+(``images/camera\_0.jpg''). Let's see if your \texttt{who\_it\_is()}
+algorithm identifies Younes.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{76}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} BEGIN UNIT TEST}
+\PY{c+c1}{\PYZsh{} Test 1 with Younes pictures }
+\PY{n}{who\PYZus{}is\PYZus{}it}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/camera\PYZus{}0.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Test 2 with Younes pictures }
+\PY{n}{test1} \PY{o}{=} \PY{n}{who\PYZus{}is\PYZus{}it}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/camera\PYZus{}0.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{k}{assert} \PY{n}{np}\PY{o}{.}\PY{n}{isclose}\PY{p}{(}\PY{n}{test1}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mf}{0.5992946}\PY{p}{)}
+\PY{k}{assert} \PY{n}{test1}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{younes}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{c+c1}{\PYZsh{} Test 3 with Younes pictures }
+\PY{n}{test2} \PY{o}{=} \PY{n}{who\PYZus{}is\PYZus{}it}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/younes.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{database}\PY{p}{,} \PY{n}{FRmodel}\PY{p}{)}
+\PY{k}{assert} \PY{n}{np}\PY{o}{.}\PY{n}{isclose}\PY{p}{(}\PY{n}{test2}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{)}
+\PY{k}{assert} \PY{n}{test2}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{younes}\PY{l+s+s1}{\PYZsq{}}
+\PY{c+c1}{\PYZsh{} END UNIT TEST}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+it's younes, the distance is 0.5992949
+it's younes, the distance is 0.5992949
+it's younes, the distance is 0.0
+    \end{Verbatim}
+
+    \textbf{Expected Output}:
+
+it's Younes, the distance is 0.5992946
+
+(0.5992946, `younes')
+
+You can change ``camera\_0.jpg'' (picture of Younes) to
+``camera\_1.jpg'' (picture of Bertrand) and see the result.
+
+    \textbf{Congratulations}! You've completed this assignment, and your
+face recognition system is working well! It not only lets in authorized
+persons, but now people don't need to carry an ID card around anymore!
+
+You've now seen how a state-of-the-art face recognition system works,
+and can describe the difference between face recognition and face
+verification. Here's a quick recap of what you've accomplished:
+
+\begin{itemize}
+\tightlist
+\item
+  Posed face recognition as a binary classification problem
+\item
+  Implemented one-shot learning for a face recognition problem
+\item
+  Applied the triplet loss function to learn a network's parameters in
+  the context of face recognition
+\item
+  Mapped face images into 128-dimensional encodings using a pretrained
+  model
+\item
+  Performed face verification and face recognition with these encodings
+\end{itemize}
+
+Great work!
+
+    \textbf{What you should remember}:
+
+\begin{itemize}
+\item
+  Face verification solves an easier 1:1 matching problem; face
+  recognition addresses a harder 1:K matching problem.
+\item
+  Triplet loss is an effective loss function for training a neural
+  network to learn an encoding of a face image.
+\item
+  The same encoding can be used for verification and recognition.
+  Measuring distances between two images' encodings allows you to
+  determine whether they are pictures of the same person.
+\end{itemize}
+
+    \textbf{Ways to improve your facial recognition model}:
+
+Although you won't implement these here, here are some ways to further
+improve the algorithm:
+
+\begin{itemize}
+\item
+  Put more images of each person (under different lighting conditions,
+  taken on different days, etc.) into the database. Then, given a new
+  image, compare the new face to multiple pictures of the person. This
+  would increase accuracy.
+\item
+  Crop the images to contain just the face, and less of the ``border''
+  region around the face. This preprocessing removes some of the
+  irrelevant pixels around the face, and also makes the algorithm more
+  robust.
+\end{itemize}
+
+    \#\# 6 - References 1. Florian Schroff, Dmitry Kalenichenko, James
+Philbin (2015). \href{https://arxiv.org/pdf/1503.03832.pdf}{FaceNet: A
+Unified Embedding for Face Recognition and Clustering}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+  Yaniv Taigman, Ming Yang, Marc'Aurelio Ranzato, Lior Wolf (2014).
+  \href{https://research.fb.com/wp-content/uploads/2016/11/deepface-closing-the-gap-to-human-level-performance-in-face-verification.pdf}{DeepFace:
+  Closing the gap to human-level performance in face verification}
+\item
+  This implementation also took a lot of inspiration from the official
+  FaceNet github repository: https://github.com/davidsandberg/facenet
+\item
+  Further inspiration was found here:
+  https://machinelearningmastery.com/how-to-develop-a-face-recognition-system-using-facenet-in-keras-and-an-svm-classifier/
+\item
+  And here:
+  https://github.com/nyoki-mtl/keras-facenet/blob/master/notebook/tf\_to\_keras.ipynb
+\end{enumerate}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
